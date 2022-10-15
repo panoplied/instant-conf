@@ -1,12 +1,22 @@
+import { useEffect } from 'react';
+import { useConfigContext } from '../hooks/useConfigContext';
 import { useConfig } from '../hooks/useConfig';
 
 export default function Config() {
-  const { config, error, isPending } = useConfig();
+  const { config } = useConfigContext();
+  const { fetchConfig, error, isPending } = useConfig();
+
+  useEffect(() => {
+    fetchConfig();
+  }, []);
 
   return (
     <>
+
       {isPending && <h3>Loading...</h3>}
+
       {error && <h3 style={{ color: red }}>{error}</h3>}
+
       {config && (config.map(ns => (
 
         <div key={ns.namespace}>
@@ -24,6 +34,7 @@ export default function Config() {
         </div>
 
       )))}
+
     </>
   );
 }

@@ -1,13 +1,10 @@
 import { useState, useEffect } from 'react';
+import { useConfigContext } from '../hooks/useConfigContext';
 
 export const useConfig = () => {
-  const [config, setConfig] = useState(null);
   const [error, setError] = useState(null);
   const [isPending, setIsPending] = useState(false);
-
-  useEffect(() => {
-    fetchConfig()
-  }, []);
+  const { dispatch } = useConfigContext();
 
   const fetchConfig = async () => {
     setError(null);
@@ -15,7 +12,9 @@ export const useConfig = () => {
     try {
       fetch('http://localhost:3000/api/getConfig')
         .then(res => res.json())
-        .then(data => setConfig(data))
+        .then(data => { 
+          dispatch({ type: 'FETCH_CONFIG', payload: data })
+        });
     }
     catch (err) {
       setError(err);
@@ -27,7 +26,6 @@ export const useConfig = () => {
 
   return {
     fetchConfig,
-    config,
     error,
     isPending
   };
