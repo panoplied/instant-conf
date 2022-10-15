@@ -1,9 +1,7 @@
 import Head from 'next/head';
-import { useConfig } from '../hooks/useConfig';
+import Config from '../components/Config';
 
 export default function Home() {
-  const { config, error, isPending } = useConfig();
-
   return (
     <div>
       <Head>
@@ -12,23 +10,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {isPending && <h3>Loading...</h3>}
+      <Config />
 
-      {error && <h3 style={{color: red}}>{error}</h3>}
-
-      {config && (config.map(ns => (
-
-        <div key={ns.namespace}>
-          <h3>{ns.namespace}</h3>
-          {ns.records.map(rec =>(
-            <div key={rec.key}>
-              <input value={rec.key} />
-              <input value={rec.value} />
-            </div>
-          ))}
-        </div>
-
-      )))}
     </div>
   );
 }
