@@ -19,10 +19,11 @@ export default function Config() {
 
       {error && <h3 style={{ color: red }}>{error}</h3>}
 
-      {config && (config.map(ns => (
+      {config && (config.map((ns, idx) => (
         <Namespace
           key={ns.namespace}
           ns={ns}
+          idx={idx}
         />
       )))}
     </>

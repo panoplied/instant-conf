@@ -24,3 +24,28 @@ export const getConfig = async () => {
     })
   )
 }
+
+// TODO don't forget to update all record prefixes in the namespace
+export const setNamespace = async (namespace, idx) => {
+  // Get old namespaces
+  const namespaces = (await redis.get('namespaces')).split(',');
+  console.log('old namespaces', namespaces);
+
+  // Get keys for old namespace which is going to be updated
+  const keys = await redis.keys(`${namespaces[idx]}_*`);
+  console.log('old keys', keys);
+
+  // Rename keys
+  const newKeys = await Promise.all(keys.map(async key => {
+    const newKey = key.replace(`${namespaces[idx]}_`, `${namespace}_`);
+    await redis.rename(key, newKey);
+    return newKey;  // just for test
+  }));
+  console.log('new keys', newKeys);
+
+  // Create new string of namespaces
+  namespaces[idx] = namespace;
+  const newNamespaces = namespaces.toString();
+  await redis.set('namespaces', newNamespaces);
+  console.log('new namespaces', newNamespaces);
+}
