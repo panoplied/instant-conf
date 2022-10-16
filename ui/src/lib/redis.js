@@ -10,10 +10,12 @@ export const getConfig = async () => {
       const keys = await redis.keys(`${namespace}_*`);
       let values = [];
 
-      await redis.mget(keys, (err, res) => {
-        if (err) throw err;
-        values = res;
-      });
+      if (keys.length > 0) {
+        await redis.mget(keys, (err, res) => {
+          if (err) throw err;
+          values = res;
+        });
+      }
 
       return {
         namespace,
