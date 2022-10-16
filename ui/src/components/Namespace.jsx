@@ -13,7 +13,7 @@ export default function Namespace({ namespace }) {
 
       {namespace.records.map(rec => (
         <Record
-          key={rec.name}
+          key={rec.key}
           record={rec}
           prefix={`${namespace.namespace}_`}
         />
