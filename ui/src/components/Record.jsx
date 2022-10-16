@@ -1,13 +1,33 @@
-// import { useConfigContext } from '../hooks/useConfigContext';
+import { useState } from 'react';
 
 export default function Record({ record, prefix }) {
-  // const { config } = useConfigContext();
+  const { key, value } = record;
 
-  const key = record.key.replace(`${prefix}`, '');
+  const [recordName, setRecordName] = useState(key.replace(prefix, ''));
+  const [recordValue, setRecordValue] = useState(value);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const updatedRecord = {
+      key: prefix + recordName,
+      value: recordValue,
+    };
+    console.log(updatedRecord);
+  }
 
   return (
-    <div>
-      <p>{ key } : { record.value }</p>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        value={recordName}
+        onChange={e => setRecordName(e.target.value)}
+      />
+      <input
+        type="text"
+        value={recordValue}
+        onChange={e => setRecordValue(e.target.value)}
+      />
+      <button type="submit" style={{display: 'None'}} />
+    </form>
   );
 }
