@@ -1,6 +1,9 @@
-import { useEffect } from 'react';
 import { useConfigContext } from '../hooks/useConfigContext';
 import { useConfig } from '../hooks/useConfig';
+import { useEffect } from 'react';
+
+// components
+import Namespace from './Namespace';
 
 export default function Config() {
   const { config } = useConfigContext();
@@ -12,29 +15,15 @@ export default function Config() {
 
   return (
     <>
-
       {isPending && <h3>Loading...</h3>}
 
       {error && <h3 style={{ color: red }}>{error}</h3>}
 
       {config && (config.map(ns => (
-
         <div key={ns.namespace}>
-          <h3>{ns.namespace}</h3>
-
-          {ns.records.map(rec => (
-
-            <div key={rec.key}>
-              <input value={rec.key} />
-              <input value={rec.value} />
-            </div>
-
-          ))}
-
+          <Namespace namespace={ns} />
         </div>
-
       )))}
-
     </>
   );
 }
