@@ -29,17 +29,12 @@ export const useConfig = () => {
     setIsPending(true);
     try {
       const res = await fetch('http://localhost:3000/api/setNamespace', {
-        body: JSON.stringify({
-          namespace,
-          idx,
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        body: JSON.stringify({ namespace, idx }),
+        headers: { 'Content-Type': 'application/json' },
         method: 'POST',
       });
-      const { err } = await res.json();
-      if (err) { setError(err) }
+      const { error } = await res.json();
+      if (error) { setError(error) }
     }
     catch (err) {
       setError(err);

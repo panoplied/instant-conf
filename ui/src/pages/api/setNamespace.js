@@ -7,10 +7,10 @@ export default async function handler(req, res) {
     res.status(400).json({
       error: 'Namespace title can not be empty',
     });
+  } else {
+    await setNamespace(namespace, idx);
+    res.status(200).json({
+      body: 'success',
+    });
   }
-
-  await setNamespace(namespace, idx);
-  res.status(200).json({
-    body: 'success',
-  });
 }
