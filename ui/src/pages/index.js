@@ -1,6 +1,9 @@
+import { ConfigContextProvider } from '../context/ConfigContext';
+
+// components
 import Head from 'next/head';
 import Config from '../components/Config';
-import { ConfigContextProvider } from '../context/ConfigContext';
+import ThemeToggle from '../components/ThemeToggle';
 
 export default function Home() {
   return (
@@ -10,6 +13,8 @@ export default function Home() {
         <meta name="description" content="instant-conf web ui" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
+      <ThemeToggle />
 
       <ConfigContextProvider>
         <Config />
