@@ -7,6 +7,10 @@ module.exports = {
   darkMode: 'class',
   theme: {
     extend: {
+      fontFamily: {
+        robotoMonoRegular: ['Roboto Mono Regular'],
+        robotoMonoLight: ['Roboto Mono Light'],
+      },
       keyframes: {
         wiggle: {
           '0%, 100%': { transform: 'rotate(-9deg)' },

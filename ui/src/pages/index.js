@@ -12,6 +12,8 @@ export default function Home() {
         <title>Create Next App</title>
         <meta name="description" content="instant-conf web ui" />
         <link rel="icon" href="/favicon.ico" />
+        <link rel="preload" href="/fonts/RobotMono-Regular.ttf" as="font" crossOrigin="" type="font/ttf" />
+        <link rel="preload" href="/fonts/RobotMono-Light.ttf" as="font" crossOrigin="" type="font/ttf" />
       </Head>
 
       <ThemeToggle />

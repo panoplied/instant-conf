@@ -14,7 +14,7 @@ export default function Config() {
   }, []);
 
   return (
-    <>
+    <div className="font-robotoMonoRegular">
       {isPending && <h3>Loading...</h3>}
 
       {error && <h3 style={{ color: red }}>{error}</h3>}
@@ -26,6 +26,6 @@ export default function Config() {
           idx={idx}
         />
       )))}
-    </>
+    </div>
   );
 }
