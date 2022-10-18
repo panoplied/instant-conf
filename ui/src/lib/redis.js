@@ -2,27 +2,30 @@ import Redis from 'ioredis';
 const redis = new Redis(process.env.REDIS_URL);
 
 export const getConfig = async () => {
-  return await Promise.all(
-    (await redis.get('namespaces'))
-    .split(',')
-    .map(async namespace => {
+  const ns = await redis.get('namespaces');
 
-      const keys = await redis.keys(`${namespace}_*`);
-      let values = [];
+  if (ns) {
+    return await Promise.all(
+      ns.split(',').map(async namespace => {
+        const keys = await redis.keys(`${namespace}_*`);
+        let values = [];
 
-      if (keys.length > 0) {
-        await redis.mget(keys, (err, res) => {
-          if (err) throw err;
-          values = res;
-        });
-      }
+        if (keys.length > 0) {
+          await redis.mget(keys, (err, res) => {
+            if (err) throw err;
+            values = res;
+          });
+        }
 
-      return {
-        namespace,
-        records: keys.map((key, i) => ({ key, value: values[i] })),
-      };
-    })
-  )
+        return {
+          namespace,
+          records: keys.map((key, i) => ({ key, value: values[i]})),
+        };
+      })
+    );
+  }
+
+  return null;
 }
 
 export const setNamespace = async (namespace, idx) => {
