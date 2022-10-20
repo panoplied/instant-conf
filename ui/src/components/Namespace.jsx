@@ -23,25 +23,27 @@ export default function Namespace({ ns, idx }) {
   // TODO handle error and pending state when setting namespace
   return (
     <>
-      <form
-        onSubmit={handleSubmit}
-      >
-        <input
-          type="text"
-          value={title}
-          onChange={e => setTitle(e.target.value)}
-          style={{ fontSize: '16px' }}
-        />
+
+      <form onSubmit={handleSubmit} >
+        <div className="p-2 text-xl">
+          <input
+            type="text"
+            value={title}
+            onChange={e => setTitle(e.target.value)}
+          />
+        </div>
         <button type="submit" style={{ display: 'None' }} />
       </form>
 
       {ns.records.map(rec => (
-        <Record
+        <div
           key={rec.key}
-          record={rec}
-          prefix={prefix}
-        />
+          className="py-2 odd:bg-stone-200 dark:odd:bg-stone-800"
+        >
+          <Record record={rec} prefix={prefix} />
+        </div>
       ))}
+
     </>
   );
 }

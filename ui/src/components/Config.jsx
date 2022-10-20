@@ -14,17 +14,17 @@ export default function Config() {
   }, []);
 
   return (
-    <div>
+    <div className="
+      sm:w-full md:w-[90%] lg:w-[90%] xl:w-[80%] 2xl:min-w-[50%] 2xl:max-w-[60%]
+    ">
       {isPending && <h3>Loading...</h3>}
 
       {error && <h3 style={{ color: red }}>{error}</h3>}
 
       {config && (config.map((ns, idx) => (
-        <Namespace
-          key={ns.namespace}
-          ns={ns}
-          idx={idx}
-        />
+        <div key={ns.namespace} className="mb-4 pb-4">
+          <Namespace ns={ns} idx={idx} />
+        </div>
       )))}
     </div>
   );

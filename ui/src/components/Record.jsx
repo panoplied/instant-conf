@@ -16,7 +16,9 @@ export default function Record({ record, prefix }) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-row gap-4 px-2">
       <input
         type="text"
         value={recordName}

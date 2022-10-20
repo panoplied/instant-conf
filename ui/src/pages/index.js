@@ -7,7 +7,12 @@ import ThemeToggle from '../components/ThemeToggle';
 
 export default function Home() {
   return (
-    <div className="font-robotoMonoRegular">
+    <div className="
+      font-robotoMonoRegular
+      min-h-screen
+      bg-stone-50
+      dark:bg-stone-900
+    ">
 
       <Head>
         <title>Create Next App</title>
@@ -21,7 +26,7 @@ export default function Home() {
         <ThemeToggle/>
       </div>
 
-      <div className="grid place-items-center bg-zinc-500">
+      <div className="grid place-items-center">
         <ConfigContextProvider>
           <Config />
         </ConfigContextProvider>
