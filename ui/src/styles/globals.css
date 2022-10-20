@@ -21,6 +21,7 @@
     @apply
       px-2
       text-black
+      w-full
       dark:text-white
       bg-transparent
   }

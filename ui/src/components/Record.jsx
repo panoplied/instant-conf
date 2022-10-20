@@ -23,6 +23,7 @@ export default function Record({ record, prefix }) {
         type="text"
         value={recordName}
         onChange={e => setRecordName(e.target.value)}
+        className="basis-1/3 shrink"
       />
       <input
         type="text"
