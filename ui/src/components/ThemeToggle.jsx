@@ -18,7 +18,7 @@ export default function ThemeToggle() {
     <div className="flex">
       <span
         className={`
-          text-4xl
+          text-3xl
           select-none
           cursor-pointer
           ${isAnimating && 'animate-[wiggle_200ms_ease-in-out]'}

@@ -42,8 +42,6 @@ export default function Namespace({ ns, idx }) {
           prefix={prefix}
         />
       ))}
-
-      <br />  {/* TODO don't forget to remove this after styling */}
     </>
   );
 }

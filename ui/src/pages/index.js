@@ -7,7 +7,8 @@ import ThemeToggle from '../components/ThemeToggle';
 
 export default function Home() {
   return (
-    <div>
+    <div className="font-robotoMonoRegular">
+
       <Head>
         <title>Create Next App</title>
         <meta name="description" content="instant-conf web ui" />
@@ -16,11 +17,15 @@ export default function Home() {
         <link rel="preload" href="/fonts/RobotMono-Light.ttf" as="font" crossOrigin="" type="font/ttf" />
       </Head>
 
-      <ThemeToggle />
+      <div className="flex flex-row-reverse p-4">
+        <ThemeToggle/>
+      </div>
 
-      <ConfigContextProvider>
-        <Config />
-      </ConfigContextProvider>
+      <div className="grid place-items-center bg-zinc-500">
+        <ConfigContextProvider>
+          <Config />
+        </ConfigContextProvider>
+      </div>
 
     </div>
   );
