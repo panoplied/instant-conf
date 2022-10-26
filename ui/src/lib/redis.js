@@ -117,14 +117,29 @@ export const removeNamespace = async (namespace) => {
   const newNamespaces = namespaces.filter(ns => ns !== namespace);
 
   const keys = await redis.keys(`${namespace}_*`);
-  await redis.del(keys);
+  if (keys.length > 0) {
+    await redis.del(keys);
+  }
+
   await redis.set('namespaces', newNamespaces.toString());
 }
 
 
-// TODO
 // ---[ RECORD OPERATIONS ]---
+
 // Get Record
+export const getRecord = async(key) => {
+  const value = await redis.get(key); 
+  if (!value) {
+    throw new Error('No such record');
+  }
+
+  return {
+    key: value
+  };
+}
+
+// TODO
 // Create Record
 // Update Record
 // Remove Record
