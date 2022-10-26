@@ -22,7 +22,7 @@ export default function Config() {
       {error && <h3 style={{ color: red }}>{error}</h3>}
 
       {config && (config.map((ns, idx) => (
-        <div key={ns.namespace} className="mb-4 pb-4">
+        <div key={ns.namespace} className="mb-4 border border-stone-300 dark:border-stone-700">
           <Namespace ns={ns} idx={idx} />
         </div>
       )))}
