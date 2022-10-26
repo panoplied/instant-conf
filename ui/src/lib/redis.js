@@ -34,6 +34,36 @@ export const getConfig = async () => {
 
 // ---[ NAMESPACE OPERATIONS ]---
 
+// Get Namespace
+export const getNamespace = async (namespace) => {
+  const redisError = new Error('Could not get namespace, check Redis instance');
+  const namespaces = await redis.get('namespaces');
+
+  if (!namespaces) {
+    throw new Error('No namespaces yet created');
+  }
+
+  if (!namespaces.split(',').includes(namespace)) {
+    throw new Error('No such namespace exist');
+  } else {
+    const keys = await redis.keys(`${namespace}_*`);
+    let values = [];
+
+    if (keys.length > 0) {
+      await redis.mget(keys, (err, res) => {
+        if (err) throw err;
+        values = res;
+      });
+    }
+
+    return {
+      namespace,
+      records: keys.map((key, i) => ({ key, value: values[i] })),
+    };
+  }
+  return null;
+}
+
 // Create Namespace
 export const createNamespace = async (namespace) => {
   const redisError = new Error('Could not create namespace, check Redis instance');
@@ -44,15 +74,13 @@ export const createNamespace = async (namespace) => {
     if (result !== "OK") throw redisError;
   }
   
-  else {
-    const namespaces = curNamespaces.split(',');
-    if (namespaces.includes(namespace)) throw new Error(`Namespace ${namespace} already exists`);
+  const namespaces = curNamespaces.split(',');
+  if (namespaces.includes(namespace)) throw new Error(`Namespace ${namespace} already exists`);
 
-    namespaces.push(namespace);
+  namespaces.push(namespace);
 
-    const result = await redis.set('namespaces', namespaces.toString());
-    if (result !== "OK") throw redisError;
-  }
+  const result = await redis.set('namespaces', namespaces.toString());
+  if (result !== "OK") throw redisError;
 }
 
 // Update Namespace
