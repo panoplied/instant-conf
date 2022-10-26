@@ -1,4 +1,4 @@
-import { getNamespace, createNamespace, updateNamespace } from '../../lib/redis';
+import { getNamespace, createNamespace, updateNamespace, removeNamespace } from '../../lib/redis';
 
 export default async function handler(req, res) {
 
@@ -14,7 +14,7 @@ export default async function handler(req, res) {
     case 'PATCH':
       return await handle(update);
     case 'DELETE':
-      // delete namespace
+      return await handle(remove);
     default:
       return await handle(get);
   }
@@ -44,9 +44,7 @@ async function create(req, res) {
   } catch (e) {
     return res.status(500).json({ error: e.message });
   }
-
 }
-
 
 async function update(req, res) {
   const { namespace, idx } = req.body;
@@ -61,5 +59,19 @@ async function update(req, res) {
   } catch (e) {
     return res.status(500).json({ error: e.message });
   }
+}
 
+async function remove(req, res) {
+  const { namespace } = req.body;
+
+  if (!namespace) {
+    return res.status(400).json({ error: 'Namespace title can not be empty' });
+  }
+
+  try {
+    await removeNamespace(namespace);
+    return res.status(200).json({ body: `Namespace ${namespace} deleted`});
+  } catch (e) {
+    return res.status(500).json({ error: e.message });
+  }
 }

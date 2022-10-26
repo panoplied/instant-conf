@@ -36,7 +36,6 @@ export const getConfig = async () => {
 
 // Get Namespace
 export const getNamespace = async (namespace) => {
-  const redisError = new Error('Could not get namespace, check Redis instance');
   const namespaces = await redis.get('namespaces');
 
   if (!namespaces) {
@@ -85,13 +84,20 @@ export const createNamespace = async (namespace) => {
 
 // Update Namespace
 export const updateNamespace = async (namespace, idx) => {
-  const namespaces = (await redis.get('namespaces')).split(',');
+  const curNamespaces = (await redis.get('namespaces'));
+
+  if (!curNamespaces) {
+    throw new Error('No namespaces yet created');
+  }
+
+  const namespaces = curNamespaces.split(',');
   if (namespaces.includes(namespace)) throw new Error(`Namespace ${namespace} already exists`);
   const curKeys = await redis.keys(`${namespaces[idx]}_*`);
 
   await Promise.all(curKeys.map(async key => {
     const newKey = key.replace(`${namespaces[idx]}_`, `${namespace}_`);
-    await redis.rename(key, newKey);
+    const result = await redis.rename(key, newKey);
+    if (result !== "OK") throw new Error('Could not update namespace, check Redis instance');
   }));
 
   namespaces[idx] = namespace;
@@ -99,19 +105,26 @@ export const updateNamespace = async (namespace, idx) => {
   if (result !== "OK") throw new Error ('Could not update namespace, check Redis instance');
 }
 
+// Remove Namespace
+export const removeNamespace = async (namespace) => {
+  const curNamespaces = (await redis.get('namespaces'));
+
+  if (!curNamespaces) {
+    throw new Error('No namespaces yet created');
+  }
+
+  const namespaces = curNamespaces.split(',');
+  const newNamespaces = namespaces.filter(ns => ns !== namespace);
+
+  const keys = await redis.keys(`${namespace}_*`);
+  await redis.del(keys);
+  await redis.set('namespaces', newNamespaces.toString());
+}
+
+
 // TODO
-// get namespace
-  // (name)
-  // Return all records
-// Delete Namespace
-  // (name)
-  // Delete all records
-
-
 // ---[ RECORD OPERATIONS ]---
-
-// TODO
 // Get Record
 // Create Record
 // Update Record
-// Delete Record
+// Remove Record
