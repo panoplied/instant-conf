@@ -7,10 +7,10 @@ import Namespace from './Namespace';
 
 export default function Config() {
   const { config } = useConfigContext();
-  const { fetchConfig, error, isPending } = useConfig();
+  const { getConfig, error, isPending } = useConfig();
 
   useEffect(() => {
-    fetchConfig();
+    getConfig();
   }, []);
 
   return (

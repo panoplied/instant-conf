@@ -1,6 +1,10 @@
 import Redis from 'ioredis';
 const redis = new Redis(process.env.REDIS_URL);
 
+
+// ---[ GLOBAL CONFIG OPERATIONS ]---
+
+// Get Config
 export const getConfig = async () => {
   const ns = await redis.get('namespaces');
 
@@ -19,25 +23,67 @@ export const getConfig = async () => {
 
         return {
           namespace,
-          records: keys.map((key, i) => ({ key, value: values[i]})),
+          records: keys.map((key, i) => ({ key, value: values[i] })),
         };
       })
     );
   }
-
   return null;
 }
 
-export const setNamespace = async (namespace, idx) => {
-  const oldNamespaces = (await redis.get('namespaces')).split(',');
-  const oldKeys = await redis.keys(`${oldNamespaces[idx]}_*`);
 
-  await Promise.all(oldKeys.map(async key => {
-    const newKey = key.replace(`${oldNamespaces[idx]}_`, `${namespace}_`);
+// ---[ NAMESPACE OPERATIONS ]---
+
+// Create Namespace
+export const createNamespace = async (namespace) => {
+  const redisError = new Error('Could not create namespace, check Redis instance');
+  const curNamespaces = await redis.get('namespaces');
+
+  if (!curNamespaces) {
+    const result = await redis.set('namespaces', namespace);
+    if (result !== "OK") throw redisError;
+  }
+  
+  else {
+    const namespaces = curNamespaces.split(',');
+    if (namespaces.includes(namespace)) throw new Error(`Namespace ${namespace} already exists`);
+
+    namespaces.push(namespace);
+
+    const result = await redis.set('namespaces', namespaces.toString());
+    if (result !== "OK") throw redisError;
+  }
+}
+
+// Update Namespace
+export const updateNamespace = async (namespace, idx) => {
+  const namespaces = (await redis.get('namespaces')).split(',');
+  if (namespaces.includes(namespace)) throw new Error(`Namespace ${namespace} already exists`);
+  const curKeys = await redis.keys(`${namespaces[idx]}_*`);
+
+  await Promise.all(curKeys.map(async key => {
+    const newKey = key.replace(`${namespaces[idx]}_`, `${namespace}_`);
     await redis.rename(key, newKey);
   }));
 
-  oldNamespaces[idx] = namespace;
-  const newNamespaces = oldNamespaces.toString();
-  await redis.set('namespaces', newNamespaces);
+  namespaces[idx] = namespace;
+  const result = await redis.set('namespaces', namespaces.toString());
+  if (result !== "OK") throw new Error ('Could not update namespace, check Redis instance');
 }
+
+// TODO
+// get namespace
+  // (name)
+  // Return all records
+// Delete Namespace
+  // (name)
+  // Delete all records
+
+
+// ---[ RECORD OPERATIONS ]---
+
+// TODO
+// Get Record
+// Create Record
+// Update Record
+// Delete Record

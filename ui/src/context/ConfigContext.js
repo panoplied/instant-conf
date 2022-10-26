@@ -6,7 +6,7 @@ export const configReducer = (state, action) => {
   // DEBUG
   console.log(state, action);
   switch (action.type) {
-    case 'FETCH_CONFIG':
+    case 'GET_CONFIG':
       return { ...state, config: action.payload };
     default:
       return state;

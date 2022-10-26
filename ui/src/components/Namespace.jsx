@@ -9,15 +9,15 @@ export default function Namespace({ ns, idx }) {
   const prefix = `${namespace}_`;
 
   const [title, setTitle] = useState(namespace);
-  const { setNamespace, error, isPending } = useConfig();
+  const { updateNamespace, error, isPending } = useConfig();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const updNamespace = {
+    const newNamespace = {
       namespace: title,
       idx,
     };
-    setNamespace(updNamespace);
+    updateNamespace(newNamespace);
   }
 
   // TODO handle error and pending state when setting namespace
