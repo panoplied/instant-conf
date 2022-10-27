@@ -114,6 +114,8 @@ export const getRecord = async (key) => {
 
 // Create Record
 export const createRecord = async (key, value) => {
+  if (await redis.exists(key)) throw new Error('Record already exists');
+
   await redis.set(key, value);
 }
 
@@ -122,11 +124,14 @@ export const updateRecord = async (oldRecord, newRecord) => {
   const { key: oldKey, value: oldValue } = oldRecord;
   const { key: newKey, value: newValue } = newRecord;
 
+  if (!await redis.exists(oldKey)) throw new Error('No such record exists');
+
   if (oldValue != newValue) await redis.set(oldKey, newValue);
   if (oldKey != newKey) await redis.rename(oldKey, newKey);
 }
 
 // Remove Record
 export const removeRecord = async (key) => {
+  if (!await redis.exists(key)) throw new Error('No such record exists');
   await redis.del(key);
 }
