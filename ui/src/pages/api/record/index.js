@@ -33,7 +33,7 @@ async function create(req, res) {
 
   try {
     await createRecord(key, value);
-    return res.status(200).json({ body: `Record {${key}:${value} created}` });
+    return res.status(200).json({ body: `Record {${key}:${value}} created` });
   } catch (e) {
     return res.status(500).json({ error: e.message });
   }
@@ -54,7 +54,7 @@ async function update(req, res) {
 }
 
 async function remove(req, res) {
-  const key = req.body;
+  const { key } = req.body;
 
   try {
     await removeRecord(key);
