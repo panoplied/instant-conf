@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Create Next App</title>
+        <title>Instant Conf</title>
         <meta name="description" content="instant-conf web ui" />
         <link rel="icon" href="/favicon.ico" />
         <link rel="preload" href="/fonts/RobotoMono-Regular.ttf" as="font" crossOrigin="" type="font/ttf" />
