@@ -26,6 +26,7 @@ export default function Config() {
           <Namespace ns={ns} idx={idx} />
         </div>
       )))}
+
     </div>
   );
 }

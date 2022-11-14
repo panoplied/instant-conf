@@ -15,22 +15,20 @@ export default function ThemeToggle() {
   if (!mounted) return null;
 
   return(
-    <div className="flex">
-      <span
-        className={`
-          text-3xl
-          select-none
-          cursor-pointer
-          ${isAnimating && 'animate-[wiggle_200ms_ease-in-out]'}
-        `}
-        onClick={() => {
-          setIsAnimating(true);
-          setTheme(theme === 'dark' ? 'light' : 'dark');
-        }}
-        onAnimationEnd={() => {setIsAnimating(false)}}
-      >
-        {currentTheme === 'dark' ? '🌞' : '🌚'}
-      </span>
+    <div
+      className={`
+        text-2xl
+        select-none
+        cursor-pointer
+        ${isAnimating && 'animate-[wiggle_200ms_ease-in-out]'}
+      `}
+      onClick={() => {
+        setIsAnimating(true);
+        setTheme(theme === 'dark' ? 'light' : 'dark');
+      }}
+      onAnimationEnd={() => {setIsAnimating(false)}}
+    >
+      {currentTheme === 'dark' ? '🌞' : '🌚'}
     </div>
   );
 }

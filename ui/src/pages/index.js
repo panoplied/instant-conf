@@ -1,9 +1,9 @@
 import { ConfigContextProvider } from '../context/ConfigContext';
+import Head from 'next/head';
 
 // components
-import Head from 'next/head';
+import Header from '../components/Header';
 import Config from '../components/Config';
-import ThemeToggle from '../components/ThemeToggle';
 
 export default function Home() {
   return (
@@ -23,12 +23,9 @@ export default function Home() {
         dark:bg-stone-900
       ">
 
-        <div className="flex flex-row-reverse p-4">
-          <ThemeToggle/>
-        </div>
-
         <div className="grid place-items-center">
           <ConfigContextProvider>
+            <Header />
             <Config />
           </ConfigContextProvider>
         </div>
