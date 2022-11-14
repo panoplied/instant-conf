@@ -49,9 +49,31 @@ export const useNamespace = () => {
     }
   }
 
+  const removeNamespace = async (namespace, idx) => {
+    setError(null);
+    setIsPending(true);
+    try {
+      const res = await fetch('http://localhost:3000/api/namespace', {
+        body: JSON.stringify({ namespace }),
+        headers: { 'Content-Type': 'application/json' },
+        method: 'DELETE',
+      });
+      const { error } = await res.json();
+      if (error) { setError(error) }
+    }
+    catch (err) {
+      setError(err);
+    }
+    finally {
+      dispatch({ type: 'REMOVE_NAMESPACE', payload: idx });
+      setIsPending(false);
+    }
+  }
+
   return {
     createNamespace,
     updateNamespace,
+    removeNamespace,
     error,
     isPending,
   };

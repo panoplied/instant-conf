@@ -12,6 +12,10 @@ export const configReducer = (state, action) => {
       const newNamespace = { namespace: action.payload, records: [] };
       return { ...state, config: [...state.config, newNamespace] };
 
+    case 'REMOVE_NAMESPACE':
+      const idx = action.payload;
+      return { ...state, config: [...state.config.slice(0, idx), ...state.config.slice(idx + 1)]};
+
     default:
       return state;
   }
