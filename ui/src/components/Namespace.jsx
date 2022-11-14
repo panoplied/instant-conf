@@ -1,4 +1,4 @@
-import { useConfig } from '../hooks/useConfig';
+import { useNamespace } from '../hooks/useNamespace';
 import { useState } from 'react';
 
 // components
@@ -9,9 +9,9 @@ export default function Namespace({ ns, idx }) {
   const prefix = `${namespace}_`;
 
   const [title, setTitle] = useState(namespace);
-  const { updateNamespace, error, isPending } = useConfig();
+  const { updateNamespace, error, isPending } = useNamespace();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newNamespace = {
       namespace: title,
@@ -20,7 +20,8 @@ export default function Namespace({ ns, idx }) {
     updateNamespace(newNamespace);
   }
 
-  // TODO handle error and pending state when setting namespace
+  // TODO handle pending state when setting namespace
+  // TODO explicitly update namespace (on button click etc.)
   return (
     <>
 
@@ -31,6 +32,7 @@ export default function Namespace({ ns, idx }) {
             value={title}
             onChange={e => setTitle(e.target.value)}
           />
+          {error && <p className="text-red-500 text-sm">{error}</p>}
         </div>
         <button type="submit" style={{ display: 'None' }} />
       </form>

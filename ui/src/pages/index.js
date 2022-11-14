@@ -23,7 +23,7 @@ export default function Home() {
         dark:bg-stone-900
       ">
 
-        <div className="grid place-items-center">
+        <div className="grid place-items-center pb-96">
           <ConfigContextProvider>
             <Header />
             <Config />
