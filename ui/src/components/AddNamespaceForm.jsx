@@ -1,50 +1,71 @@
 import { useNamespace } from '../hooks/useNamespace';
 import { useState } from 'react';
 
-export default function AddNamespaceForm({ reset }) {
-
+export default function AddNamespaceForm() {
+  const [isAddingNamespace, setIsAddingNamespace] = useState(false);
   const [namespaceTitle, setNamespaceTitle] = useState('');
-  const {createNamespace, error, isPending} = useNamespace();
+  const {createNamespace, resetError, error, isPending} = useNamespace();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     await createNamespace(namespaceTitle);
-    reset();
+    setNamespaceTitle('');
+    setIsAddingNamespace(false);
   }
 
   const handleCancel = (e) => {
     e.preventDefault();
-    reset();
+    setIsAddingNamespace(false);
+    resetError();
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <>
 
-      <span>Adding New Namespace</span>
+      {isPending && <p>Creating Namespace</p>}
 
-      <div className="flex flex-rows gap-4">
-
-        <input
-          className="flex-auto w-full bg-stone-800"
-          type="text"
-          autoFocus
-          value={namespaceTitle}
-          onChange={e => setNamespaceTitle(e.target.value)}
-        />
-
+      {(!isAddingNamespace && !error) && (
         <button
-          onClick={handleCancel}
-          className="flex-initial p-3"
+          onClick={() => setIsAddingNamespace(true)}
+          className="w-full p-4"
         >
-          Cancel
+          Add Namespace
         </button>
+      )}
+      {(isAddingNamespace || error) && (
+      <form onSubmit={handleSubmit}>
 
-        <button className="flex-initial p-4">
-          Add
-        </button>
+        <span>Adding New Namespace</span>
 
-      </div>
+        <div className="flex flex-rows gap-4">
 
-    </form>
+          <input
+            className="flex-auto w-full bg-stone-100 dark:bg-stone-800"
+            type="text"
+            autoFocus
+            value={namespaceTitle}
+            onChange={e => setNamespaceTitle(e.target.value)}
+          />
+
+          <button
+            type="submit"
+            className="flex-initial p-4 text-white bg-blue-500 hover:bg-blue-400 dark:bg-blue-500 dark:hover:bg-blue-400"
+          >
+            Add
+          </button>
+
+          <button
+            onClick={handleCancel}
+            className="flex-initial p-3"
+          >
+            Cancel
+          </button>
+
+        </div>
+
+        {error && <p>{error}</p>}
+
+      </form>)}
+    </>
   );
 }

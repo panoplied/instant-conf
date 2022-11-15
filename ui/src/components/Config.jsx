@@ -9,11 +9,6 @@ import AddNamespaceForm from './AddNamespaceForm';
 export default function Config() {
   const { config } = useConfigContext();
   const { getConfig, configError, configIsPending } = useConfig();
-  const [isAddingNamespace, setIsAddingNamespace] = useState(false);
-
-  const resetAddingNamespace = () => {
-    setIsAddingNamespace(false);
-  }
 
   useEffect(() => {
     getConfig();
@@ -32,18 +27,7 @@ export default function Config() {
         </div>
       )))}
 
-      {(config && !isAddingNamespace) && (
-        <button
-          onClick={() => setIsAddingNamespace(true)}
-          className="w-full p-4"
-        >
-          Add Namespace
-        </button>
-      )}
-
-      {(config && isAddingNamespace) && (
-        <AddNamespaceForm reset={resetAddingNamespace} />
-      )}
+      {(config && <AddNamespaceForm />)}
 
     </div>
   );

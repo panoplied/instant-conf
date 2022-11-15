@@ -18,13 +18,16 @@ export const useNamespace = () => {
         method: 'POST',
       });
       const { error } = await res.json();
-      if (error) { setError(error) }
+      if (error) {
+        setError(error)
+      } else {
+        dispatch({ type: 'CREATE_NAMESPACE', payload: namespace });
+      }
     }
     catch (err) {
       setError(err);
     }
     finally {
-      dispatch({ type: 'CREATE_NAMESPACE', payload: namespace });
       setIsPending(false);
     }
   }
@@ -59,21 +62,29 @@ export const useNamespace = () => {
         method: 'DELETE',
       });
       const { error } = await res.json();
-      if (error) { setError(error) }
+      if (error) {
+        setError(error)
+      } else {
+        dispatch({ type: 'REMOVE_NAMESPACE', payload: idx });
+      }
     }
     catch (err) {
       setError(err);
     }
     finally {
-      dispatch({ type: 'REMOVE_NAMESPACE', payload: idx });
       setIsPending(false);
     }
+  }
+
+  const resetError = async () => {
+    setError(null);
   }
 
   return {
     createNamespace,
     updateNamespace,
     removeNamespace,
+    resetError,
     error,
     isPending,
   };

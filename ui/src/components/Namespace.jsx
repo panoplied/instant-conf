@@ -43,7 +43,7 @@ export default function Namespace({ ns, idx }) {
           <button type="submit" style={{ display: 'None' }} />
         </form>
 
-        <button onClick={handleDelete} className="flex-initial p-2">DEL</button>
+        <button onClick={handleDelete} className="flex-initial p-2 m-2 text-xs">DEL</button>
 
       </div>
 

@@ -28,8 +28,13 @@
   button {
     @apply
       rounded
+
       dark:text-white
+
       bg-stone-200
       dark:bg-stone-800
+
+      hover:bg-stone-300
+      hover:dark:bg-stone-700
   }
 }
