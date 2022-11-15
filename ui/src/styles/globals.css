@@ -23,6 +23,12 @@
       w-full
       dark:text-white
       bg-transparent
+
+      hover:bg-stone-200
+      focus:bg-stone-200
+
+      dark:hover:bg-stone-700
+      dark:focus:bg-stone-700
   }
 
   button {

@@ -50,7 +50,7 @@ export default function Namespace({ ns, idx }) {
       {ns.records.map(rec => (
         <div
           key={rec.key}
-          className="py-2 odd:bg-stone-200 dark:odd:bg-stone-800"
+          className="py-1 odd:bg-stone-100 dark:odd:bg-stone-800"
         >
           <Record record={rec} prefix={prefix} />
         </div>
