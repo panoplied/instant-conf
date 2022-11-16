@@ -1,21 +1,20 @@
 import { useState } from 'react';
-import { useConfigContext } from '../hooks/useConfigContext';
+import { useConfigContext } from './useConfigContext';
 
-export const useNamespace = () => {
-  const API_URI = 'http://localhost:3000/api/namespace';
+export const useRecord = () => {
+  const API_URI = 'http://localhost:3000/api/record';
 
   const [error, setError] = useState(null);
   const [isPending, setIsPending] = useState(null);
 
   const { dispatch } = useConfigContext();
 
-
-  const createNamespace = async (namespace) => {
+  const createRecord = async (record, namespaceIdx) => {
     setError(null);
     setIsPending(true);
     try {
       const res = await fetch(API_URI, {
-        body: JSON.stringify({ namespace }),
+        body: JSON.stringify(record),
         headers: { 'Content-Type': 'application/json' },
         method: 'POST',
       });
@@ -23,7 +22,7 @@ export const useNamespace = () => {
       if (error) {
         setError(error)
       } else {
-        dispatch({ type: 'CREATE_NAMESPACE', payload: namespace });
+        dispatch({ type: 'CREATE_RECORD', payload: { record, namespaceIdx } });
       }
     }
     catch (err) {
@@ -34,12 +33,12 @@ export const useNamespace = () => {
     }
   }
 
-  const updateNamespace = async ({ namespace, idx }) => {
+  const updateRecord = async (oldRecord, newRecord, namespaceIdx) => {
     setError(null);
     setIsPending(true);
     try {
       const res = await fetch(API_URI, {
-        body: JSON.stringify({ namespace, idx }),
+        body: JSON.stringify({ oldRecord, newRecord }),
         headers: { 'Content-Type': 'application/json' },
         method: 'PATCH',
       });
@@ -54,20 +53,20 @@ export const useNamespace = () => {
     }
   }
 
-  const removeNamespace = async (namespace, idx) => {
+  const removeRecord = async (key, namespaceIdx) => {
     setError(null);
     setIsPending(true);
     try {
       const res = await fetch(API_URI, {
-        body: JSON.stringify({ namespace }),
+        body: JSON.stringify({ key }),
         headers: { 'Content-Type': 'application/json' },
         method: 'DELETE',
       });
       const { error } = await res.json();
       if (error) {
-        setError(error)
+        setError(error);
       } else {
-        dispatch({ type: 'REMOVE_NAMESPACE', payload: idx });
+        dispatch({ type: 'REMOVE_RECORD', payload: { key, namespaceIdx } });
       }
     }
     catch (err) {
@@ -83,9 +82,9 @@ export const useNamespace = () => {
   }
 
   return {
-    createNamespace,
-    updateNamespace,
-    removeNamespace,
+    createRecord,
+    updateRecord,
+    removeRecord,
     resetError,
     error,
     isPending,

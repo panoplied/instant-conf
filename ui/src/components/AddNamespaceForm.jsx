@@ -9,14 +9,17 @@ export default function AddNamespaceForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await createNamespace(namespaceTitle);
-    setNamespaceTitle('');
-    setIsAddingNamespace(false);
+    resetForm();
   }
 
   const handleCancel = (e) => {
-    e.preventDefault();
-    setIsAddingNamespace(false);
+    resetForm();
     resetError();
+  }
+
+  const resetForm = () => {
+    setNamespaceTitle('');
+    setIsAddingNamespace(false);
   }
 
   return (
@@ -27,45 +30,47 @@ export default function AddNamespaceForm() {
       {(!isAddingNamespace && !error) && (
         <button
           onClick={() => setIsAddingNamespace(true)}
-          className="w-full p-4"
+          className="w-full p-3 text-xs"
         >
-          Add Namespace
+          ADD NAMESPACE
         </button>
       )}
+
       {(isAddingNamespace || error) && (
-      <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
 
-        <span>Adding New Namespace</span>
+          <span className="text-sm">Adding New Namespace</span>
 
-        <div className="flex flex-rows gap-4">
+          <div className="flex flex-rows gap-4">
 
-          <input
-            className="flex-auto w-full bg-stone-100 dark:bg-stone-800"
-            type="text"
-            autoFocus
-            value={namespaceTitle}
-            onChange={e => setNamespaceTitle(e.target.value)}
-          />
+            <input
+              className="flex-auto w-full bg-stone-100 dark:bg-stone-800"
+              type="text"
+              autoFocus
+              value={namespaceTitle}
+              onChange={e => setNamespaceTitle(e.target.value)}
+            />
 
-          <button
-            type="submit"
-            className="flex-initial p-4 text-white bg-blue-500 hover:bg-blue-400 dark:bg-blue-500 dark:hover:bg-blue-400"
-          >
-            Add
-          </button>
+            <button
+              type="submit"
+              className="flex-initial p-3 text-white bg-blue-500 hover:bg-blue-400 dark:bg-blue-500 dark:hover:bg-blue-400 text-xs"
+            >
+              ADD
+            </button>
 
-          <button
-            onClick={handleCancel}
-            className="flex-initial p-3"
-          >
-            Cancel
-          </button>
+            <button
+              onClick={handleCancel}
+              className="flex-initial p-3 text-xs"
+            >
+              ESC
+            </button>
 
-        </div>
+          </div>
 
-        {error && <p>{error}</p>}
+          {error && <p className="text-red-600 text-xs">{error}</p>}
 
-      </form>)}
+        </form>
+      )}
     </>
   );
 }

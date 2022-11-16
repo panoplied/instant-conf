@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 // components
 import Record from './Record';
+import AddRecordForm from './AddRecordForm';
 
 export default function Namespace({ ns, idx }) {
   const { namespace } = ns;
@@ -17,7 +18,7 @@ export default function Namespace({ ns, idx }) {
       namespace: title,
       idx,
     };
-    updateNamespace(newNamespace);
+    await updateNamespace(newNamespace);
   }
 
   const handleDelete = async (e) => {
@@ -43,7 +44,7 @@ export default function Namespace({ ns, idx }) {
           <button type="submit" style={{ display: 'None' }} />
         </form>
 
-        <button onClick={handleDelete} className="flex-initial p-2 m-2 text-xs">DEL</button>
+        <button onClick={handleDelete} className="flex-initial p-2 m-2 text-xs whitespace-nowrap">DEL NAMESPACE</button>
 
       </div>
 
@@ -52,9 +53,11 @@ export default function Namespace({ ns, idx }) {
           key={rec.key}
           className="py-1 odd:bg-stone-100 dark:odd:bg-stone-800"
         >
-          <Record record={rec} prefix={prefix} />
+          <Record record={rec} prefix={prefix} namespaceIdx={idx} />
         </div>
       ))}
+
+      <AddRecordForm prefix={prefix} namespaceIdx={idx} />
 
     </>
   );
