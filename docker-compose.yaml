@@ -1,6 +1,22 @@
 version: "3.9"
+
+networks:
+  instant-conf:
+    driver: bridge
+
 services:
   redis:
     image: redis:7.0.5-alpine
+    container_name: instant-conf-redis
+    command: ["redis-server", "--bind", "redis", "--port", "6379"]
+    networks:
+      - instant-conf
     ports:
       - '6379:6379'
+  ui:
+    build: ./ui
+    container_name: instant-conf-ui
+    networks:
+      - instant-conf
+    ports:
+     - '3000:3000'
