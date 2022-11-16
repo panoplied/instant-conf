@@ -27,7 +27,7 @@ export default function Config() {
         </div>
       )))}
 
-      {(config && <AddNamespaceForm />)}
+      {(!configError && <AddNamespaceForm />)}
 
     </div>
   );

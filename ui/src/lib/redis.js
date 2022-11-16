@@ -58,13 +58,15 @@ export const getNamespace = async (namespace) => {
 // Create Namespace
 export const createNamespace = async (namespace) => {
   const curNamespaces = await redis.get('namespaces');
-  if (!curNamespaces) await redis.set('namespaces', namespace);
-  
-  const namespaces = curNamespaces.split(',');
-  if (namespaces.includes(namespace)) throw new Error(`Namespace ${namespace} already exists`);
+  if (!curNamespaces) {
+    await redis.set('namespaces', namespace);
+  } else {
+    const namespaces = curNamespaces.split(',');
+    if (namespaces.includes(namespace)) throw new Error(`Namespace ${namespace} already exists`);
 
-  namespaces.push(namespace);
-  await redis.set('namespaces', namespaces.toString());
+    namespaces.push(namespace);
+    await redis.set('namespaces', namespaces.toString());
+  }
 }
 
 // Update Namespace
